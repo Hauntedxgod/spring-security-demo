@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.maxima.models.Person;
+import ru.maxima.service.AdminService;
 import ru.maxima.service.PersonService;
+import ru.maxima.service.RegistrationService;
 import ru.maxima.validation.PersonValidator;
 
 @Controller
@@ -19,10 +21,17 @@ public class AuthController {
 
     private final PersonService service;
 
+    private final AdminService adminService;
+
+
+    private final RegistrationService registrationService;
+
     @Autowired
-    public AuthController(PersonValidator validator, PersonService service) {
+    public AuthController(PersonValidator validator, PersonService service, AdminService adminService, RegistrationService registrationService) {
         this.validator = validator;
         this.service = service;
+        this.adminService = adminService;
+        this.registrationService = registrationService;
     }
 
     @GetMapping("/login")
@@ -43,10 +52,15 @@ public class AuthController {
         if (result.hasErrors()){
             return "/auth/registration";
         }
-        service.save(person);
+
+        registrationService.save(person);
 
         return "redirect:/auth/login";
     }
 
-
+    @GetMapping("/admin")
+    private String admin(){
+        adminService.doSomeAdminStuff();
+        return "auth/admin";
+    }
 }

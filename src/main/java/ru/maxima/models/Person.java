@@ -28,6 +28,10 @@ public class Person {
     private Integer age;
 
     @Column(name = "password")
-    @Size(min = 8 , max = 15 , message = "Min 8 chars , max 15 chars")
+    @Size(min = 8 , message = "Min 8 chars , max 15 chars")
     private String password;
+
+    @Column(name = "role")
+    private String role;
+
 }

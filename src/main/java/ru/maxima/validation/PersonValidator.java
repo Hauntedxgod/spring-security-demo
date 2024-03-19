@@ -31,7 +31,7 @@ public class PersonValidator implements Validator {
         try {
             service.loadUserByUsername(p.getName());
         } catch (UsernameNotFoundException e) {
-            throw new RuntimeException(e);
+            return;
         }
 
         errors.rejectValue("username" , "100" , "User with this nickname existed");

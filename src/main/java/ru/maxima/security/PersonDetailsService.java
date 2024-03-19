@@ -20,6 +20,7 @@ public class PersonDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         Person personByName = service.findByName(username);
         if (personByName == null ){
             throw new UsernameNotFoundException("Not found");
