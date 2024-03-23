@@ -11,6 +11,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@Builder
 @Data
 public class PersonDTO {
 
@@ -19,7 +20,7 @@ public class PersonDTO {
     @Size(min = 2, max = 50, message = "Name should be between 2 and 30 characters")
     private String name;
 
-    @Min(value = 2 , message = "Lenght of password should be min 2 symbols")
+    @Size(min = 2 , max = 50 , message = "Lenght of password should be min 2 symbols")
     private String password;
 
     @NotEmpty(message = "Email should")

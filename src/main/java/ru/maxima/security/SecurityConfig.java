@@ -3,7 +3,9 @@ package ru.maxima.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,12 +43,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((s) ->
-                        s.requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()
+                        s.requestMatchers("/authenticate/login", "/authenticate/registration", "/error").permitAll()
                                 .anyRequest().authenticated())
-                .formLogin((s) -> s.loginPage("/auth/login")
+                .formLogin((s) -> s.loginPage("/authenticate/login")
                         .loginProcessingUrl("/process_login")
                         .defaultSuccessUrl("/hello", true)
-                        .failureUrl("/auth/login?error"))
+                        .failureUrl("/authenticate/login?error"))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(jwtFilter , UsernamePasswordAuthenticationFilter.class);
@@ -57,5 +59,11 @@ public class SecurityConfig {
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder();
 
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

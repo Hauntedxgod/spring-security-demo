@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import ru.maxima.dto.PersonDTO;
 import ru.maxima.models.Person;
 import ru.maxima.security.PersonDetailsService;
 

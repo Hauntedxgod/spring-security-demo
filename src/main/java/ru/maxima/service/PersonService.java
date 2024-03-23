@@ -3,10 +3,15 @@ package ru.maxima.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.maxima.dto.PersonDTO;
 import ru.maxima.models.Person;
 import ru.maxima.repositories.PeopleRepository;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PersonService {
@@ -18,6 +23,16 @@ public class PersonService {
     public PersonService(PeopleRepository peopleRepository, ModelMapper modelMapper) {
         this.peopleRepository = peopleRepository;
         this.modelMapper = modelMapper;
+    }
+
+
+    public Map<String , String> loadUserName(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PersonDTO personDTO = (PersonDTO) authentication.getPrincipal();
+
+
+
+        return Map.of("token" , personDTO.getName() );
     }
 
     public Person findByName(String name){
